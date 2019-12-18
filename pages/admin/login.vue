@@ -1,6 +1,11 @@
 <template>
-  <el-card shadow="always" :style="{width: '500px'}">
-    <el-form :model="controls" :rules="rules" ref="form_admin" @submit.native.prevent="onSubmit">
+  <el-card shadow="always" :style="{ width: '500px' }">
+    <el-form
+      :model="controls"
+      :rules="rules"
+      ref="form_admin"
+      @submit.native.prevent="onSubmit"
+    >
       <h2>Log in to admin page</h2>
       <el-form-item label="Login" prop="login">
         <el-input v-model.trim="controls.login" />
@@ -11,7 +16,9 @@
         </el-form-item>
       </div>
       <el-form-item>
-        <el-button type="primary" round native-type="submit" :loading="loading">Log In</el-button>
+        <el-button type="primary" round native-type="submit" :loading="loading"
+          >Log In</el-button
+        >
       </el-form-item>
     </el-form>
   </el-card>
@@ -59,8 +66,8 @@ export default {
               login: this.controls.login,
               password: this.controls.password
             };
-            await this.$store.dispatch('auth/login', formData)
-            this.$router.push('/admin')
+            await this.$store.dispatch("auth/login", formData);
+            this.$router.push("/admin");
           } catch (e) {
             this.loading = false;
           }
@@ -76,6 +83,9 @@ export default {
         break;
       case "logout":
         this.$message.success("Log out success");
+        break;
+      case "session":
+        this.$message.warning("Time of session is over, Log in again, please");
         break;
     }
   }

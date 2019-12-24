@@ -7,7 +7,7 @@
   >
     <h1 class="mb">Create a new post</h1>
     <el-form-item label="Enter title of the post" prop="title">
-      <el-input v-model.trim="controls.title" />
+      <el-input v-model="controls.title" />
     </el-form-item>
     <el-form-item label="Tex in format .md or .html" prop="text">
       <el-input

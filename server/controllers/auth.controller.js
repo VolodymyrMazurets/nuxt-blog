@@ -5,11 +5,13 @@ const User = require("../models/user.model");
 
 module.exports.login = async (req, res) => {
   const candidate = await User.findOne({ login: req.body.login });
+
   if (candidate) {
     const isPasswordCorrect = bcrypt.compareSync(
       req.body.password,
       candidate.password
     );
+
     if (isPasswordCorrect) {
       const token = jwt.sign(
         {
@@ -21,7 +23,7 @@ module.exports.login = async (req, res) => {
       );
       res.json({ token });
     } else {
-      res.status("401").json({ message: "Incorrect password" });
+      res.status(401).json({ message: "Wrong password" });
     }
   } else {
     res.status(404).json({ message: "User not found" });
@@ -29,16 +31,18 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.createUser = async (req, res) => {
-  const candidate = await User.findOne({login: req.body.login})
-  if(candidate) {
-    res.status(409).json({message: "Login used"})
+  const candidate = await User.findOne({ login: req.body.login });
+
+  if (candidate) {
+    res.status(409).json({ message: "Login used" });
   } else {
-    const salt = bcrypt.genSaltSync(10)
+    const salt = bcrypt.genSaltSync(10);
     const user = new User({
       login: req.body.login,
       password: bcrypt.hashSync(req.body.password, salt)
-    })
-    await user.save()
-    res.status(201).json(user)
+    });
+
+    await user.save();
+    res.status(201).json(user);
   }
 };

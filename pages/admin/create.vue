@@ -14,7 +14,7 @@
         v-model="controls.text"
         type="textarea"
         resize="none"
-        :rows="10"
+        :rows="6"
       />
     </el-form-item>
     <el-button type="success" plain @click="previewDialog = true" class="mb"
@@ -53,6 +53,9 @@ export default {
   image: null,
   layout: "admin",
   middleware: ["admin-auth"],
+  head: {
+    title: `Create | ${process.env.appName}`
+  },
   data() {
     return {
       previewDialog: false,

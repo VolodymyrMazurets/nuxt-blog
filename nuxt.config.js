@@ -42,14 +42,17 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/pwa',
   ],
-  /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
+  workbox: {
+    
+  },
   axios: {
+    baseURL: process.env.BASE_URL || 'http://localhost:3000'
+  },
+  env: {
+    appName: 'SSR Blog'
   },
   /*
   ** Build configuration

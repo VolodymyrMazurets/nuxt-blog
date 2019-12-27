@@ -34,6 +34,9 @@
 export default {
   layout: 'admin',
   middleware: ['admin-auth'],
+  head: {
+    title: `Create new user | ${process.env.appName}`
+  },
   data() {
     return {
       loading: false,

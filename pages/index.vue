@@ -1,16 +1,20 @@
 <template>
-  <el-row type='flex' justify="center">
-    <el-col :xs="24" :sm='18' :md='12' :lg='10'>
-      <app-post v-for="post in 3" :key="post"/>
+  <el-row type="flex" justify="center">
+    <el-col :xs="24" :sm="18" :md="12" :lg="10">
+      <app-post v-for="post in posts" :key="post._id" :post="post" />
     </el-col>
   </el-row>
 </template>
 
 <script>
-import AppPost from '@/components/main/Post'
+import AppPost from "@/components/main/Post";
 export default {
   head: {
-    title: 'Golovna'
+    title: `Golovna | ${process.env.appName}`
+  },
+  async asyncData({ store }) {
+    const posts = await store.dispatch("post/fetchPosts");
+    return { posts };
   },
   components: {
     AppPost
@@ -18,5 +22,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -2,34 +2,40 @@
   <article class="post">
     <header class="post__header">
       <div class="post__title">
-        <h1>Post title</h1>
+        <h1>{{ post.title }}</h1>
         <nuxt-link to="/">
           <i class="el-icon-back"></i>
         </nuxt-link>
       </div>
       <div class="post__info">
         <small>
-          {{ new Date().toLocaleString() }}
+          {{ new Date(post.date).toLocaleString() }}
           <i class="el-icon-time"></i>
         </small>
         <small>
           <i class="el-icon-view"></i>
-          42
+          {{ post.views }}
         </small>
       </div>
       <div class="post__img">
-        <img src="https://i.pravatar.cc/1000" alt="picture" />
+        <img :src="`${post.imageUrl}`" alt="picture" />
       </div>
     </header>
     <main class="post__main">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem quisquam deserunt saepe perferendis. Magni natus illum cupiditate rem perferendis iure corporis sequi consectetur sint rerum, quia explicabo sapiente autem possimus, impedit enim vitae quibusdam? Incidunt perferendis deserunt voluptatibus beatae nemo!</p>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio soluta iure, nulla mollitia eos autem quos dolorem necessitatibus quisquam eaque corporis, excepturi est, quia cumque perferendis? Dolore quidem tempora aliquam nihil facere sit molestias esse autem saepe, doloremque, numquam perferendis.</p>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores perferendis molestiae tempora, delectus corrupti officiis maxime magnam repellat totam quos hic minus consequuntur porro numquam velit temporibus. Nihil voluptatibus quo ipsa eius quasi, obcaecati commodi totam aspernatur impedit esse ducimus.</p>
+      <vue-markdown>{{ post.text }}</vue-markdown>
     </main>
     <footer>
-      <app-comment-form @created="createCommentHandler" v-if="canAddComment"/>
-      <div class="post__comments" v-if="true">
-        <app-comment v-for="comment in 4" :key="comment" :comment="comment" />
+      <app-comment-form
+        @created="createCommentHandler"
+        v-if="canAddComment"
+        :postId="post._id"
+      />
+      <div class="post__comments" v-if="post.comments.length">
+        <app-comment
+          v-for="comment in post.comments"
+          :key="comment._id"
+          :comment="comment"
+        />
       </div>
       <div class="text-center" v-else>No comments</div>
     </footer>
@@ -42,6 +48,16 @@ export default {
   validate({ params }) {
     return Boolean(params.id);
   },
+  head() {
+    return { title: `${this.post.title} | ${process.env.appName}` };
+  },
+  async asyncData({ store, params }) {
+    const post = await store.dispatch("post/fetchById", params.id);
+    await store.dispatch("post/addView", post);
+    return {
+      post: { ...post, views: ++post.views }
+    };
+  },
   data() {
     return {
       canAddComment: true
@@ -52,7 +68,8 @@ export default {
     AppCommentForm
   },
   methods: {
-    createCommentHandler() {
+    createCommentHandler(comment) {
+      this.post.comments.unshift(comment);
       this.canAddComment = false;
     }
   }

@@ -1,4 +1,5 @@
-const {model, Schema} = require('mongoose')
+const { model, Schema } = require("mongoose");
+
 const userSchema = new Schema({
   login: {
     type: String,
@@ -8,8 +9,8 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: 6
+    minLength: 6
   }
-})
+});
 
-module.exports = model('users', userSchema)
+module.exports = model("users", userSchema);

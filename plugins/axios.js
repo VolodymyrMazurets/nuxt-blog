@@ -4,7 +4,7 @@ export default function({ $axios, redirect, store }) {
       store.getters["auth/isAuthenticated"] &&
       !request.headers.common["Authorization"]
     ) {
-      const token = store.getters("auth/token");
+      const token = store.getters["auth/token"];
       request.headers.common["Authorization"] = `Bearer ${token}`;
     }
 

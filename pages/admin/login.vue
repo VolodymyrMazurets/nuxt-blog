@@ -26,6 +26,9 @@
 <script>
 export default {
   layout: "empty",
+  head: {
+    title: `Login to admin | ${process.env.appName}`
+  },
   data() {
     return {
       loading: false,

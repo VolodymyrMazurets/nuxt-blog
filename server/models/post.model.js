@@ -1,9 +1,9 @@
 const { Schema, model } = require("mongoose");
 
 const postSchema = new Schema({
-  title:{
+  title: {
     type: String,
-  required: true
+    required: true
   },
   text: {
     type: String,
@@ -21,7 +21,7 @@ const postSchema = new Schema({
   comments: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'comments'
+      ref: "comments"
     }
   ]
 });
